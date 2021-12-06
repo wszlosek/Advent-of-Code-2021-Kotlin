@@ -1,14 +1,14 @@
 fun main() {
 
     fun actionOnMap(fishMap: Map<Int, Long>): Map<Int, Long> {
-        val result = fishMap.mapKeys { (key, value) -> key - 1 }.toMutableMap()
+        val result = fishMap.mapKeys { (key, _) -> key - 1 }.toMutableMap()
         result[8] = result.getOrDefault(-1, 0)
         result[6] = result.getOrDefault(6, 0) + result.getOrDefault(-1, 0)
         result.remove(-1)
         return result
     }
 
-    fun part1(input: List<String>, n: Int): Long {
+    fun part1(input: List<String>, n: Int = 80): Long {
         val fishAndTimers = input[0]
             .split(",")
             .map {it.toInt()}
@@ -28,6 +28,6 @@ fun main() {
     }
 
     val input = readInput("Day06")
-    println(part1(input, 80))
+    println(part1(input))
     println(part2(input))
 }
