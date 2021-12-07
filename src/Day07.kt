@@ -4,8 +4,15 @@ fun main() {
 
     fun smallestFuelAmount(input: List<String>, addFunc: (Int) -> Long): Long {
         val values = input[0].split(",")
+        var maxi = 0
+        for (v in values) {
+            if (v.toInt() > maxi) {
+                maxi = v.toInt()
+            }
+        }
+
         var r1: Long = Long.MAX_VALUE
-        for (i in 0..1000) {
+        for (i in 0..maxi) {
             var sum: Long = 0
             for (v in values) {
                 sum += addFunc(abs(v.toInt() - i))
