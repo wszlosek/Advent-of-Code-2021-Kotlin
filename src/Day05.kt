@@ -9,14 +9,6 @@ fun main() {
         map.merge(key, 1) { a: Int?, b: Int? -> a!! + b!! }
     }
 
-    fun initAllPoints() {
-        for (i in 0..999) {
-            for (j in 0..999) {
-                points[Pair(i, j)] = 0
-            }
-        }
-    }
-
     fun addPoints(startPointFirst: Int, startPointSecond: Int,
                     endPointFirst: Int, endPointSecond: Int) {
         for (i in minOf(startPointFirst, endPointFirst)..maxOf(startPointFirst, endPointFirst)) {
@@ -26,25 +18,10 @@ fun main() {
         }
     }
 
-    fun addPoints2(startPointFirst: Int, startPointSecond: Int,
-                   endPointFirst: Int, endPointSecond: Int) {
-        var w = 0
-        val j = minOf(startPointFirst)
-        for (i in minOf(startPointFirst, endPointFirst)..maxOf(startPointFirst, endPointFirst)) {
-            if (startPointSecond < endPointSecond) {
-                increment(points, Pair(i, j + w))
-            } else {
-                increment(points, Pair(i, j - w))
-            }
-            println(Pair(i, j+w))
-            w += 1
-        }
-    }
-
     fun part1(input: List<String>): Int {
         var result = 0
         for (line in input) {
-            var lineSplit = line.split(",", " -> ")
+            val lineSplit = line.split(",", " -> ")
             if (lineSplit[0].toInt() == lineSplit[2].toInt() || lineSplit[1].toInt() == lineSplit[3].toInt()) {
                 addPoints(lineSplit[0].toInt(), lineSplit[1].toInt(), lineSplit[2].toInt(), lineSplit[3].toInt())
             }
@@ -52,7 +29,6 @@ fun main() {
 
         for (i in points) {
             if (i.value >= 2) {
-                println(i)
                 result += 1
             }
         }
@@ -88,7 +64,6 @@ fun main() {
     }
 
     val input = readInput("Day05")
-
     println(part1(input))
     println(part2(input))
 }
