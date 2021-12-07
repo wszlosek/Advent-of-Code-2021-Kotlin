@@ -18,12 +18,12 @@ fun main() {
     }
 
     fun part1(input: List<String>): Long {
-        val addition = {a: Int, b: Int -> abs(a - b).toLong()}
+        val addition = { a: Int, b: Int -> abs(a - b).toLong() }
         return smallestFuelAmount(input, addition)
     }
 
     fun part2(input: List<String>): Long {
-        val addition = {a: Int, b: Int -> ((abs(a - b) + 1) * abs(a - b) / 2).toLong()}
+        val addition = { a: Int, b: Int -> ((abs(a - b) + 1) * abs(a - b) / 2).toLong() }
         return smallestFuelAmount(input, addition)
     }
 
