@@ -1,4 +1,4 @@
-import kotlin.math.absoluteValue
+import kotlin.math.abs
 import kotlin.math.sign
 
 fun main() {
@@ -26,7 +26,6 @@ fun main() {
                 addPoints(lineSplit[0].toInt(), lineSplit[1].toInt(), lineSplit[2].toInt(), lineSplit[3].toInt())
             }
         }
-
         for (i in points) {
             if (i.value >= 2) {
                 result += 1
@@ -49,8 +48,8 @@ fun main() {
         for (l in a) {
             val dx = (l.x2 - l.x1).sign
             val dy = (l.y2 - l.y1).sign
-            for (t in 0..maxOf((l.x1 - l.x2).absoluteValue, (l.y1 - l.y2).absoluteValue))
-                points2[l.x1 + t * dx][l.y1 + t * dy]++
+            for (t in 0..maxOf(abs(l.x1 - l.x2), abs(l.y1 - l.y2)))
+                points2[l.x1 + t * dx][l.y1 + t * dy]+= 1
         }
 
         for (x in 0..mx) {
