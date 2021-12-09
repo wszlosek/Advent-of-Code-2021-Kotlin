@@ -7,46 +7,30 @@ fun main() {
     fun initArray(input: List<String>) {
         column = input[0].length
         row = input.size
-        array = Array(row) { IntArray(column) }
+        array = Array(row + 2) { IntArray(column + 2) }
 
-        for (i in 0 until row) {
-            for (j in 0 until column) {
-                array[i][j] = input[i][j].digitToInt()
+        for (i in 0 until row + 2) {
+            for (j in 0 until column + 2) {
+                array[i][j] = 9
+            }
+        }
+
+        for (i in 1 until row + 1) {
+            for (j in 1 until column + 1) {
+                array[i][j] = input[i - 1][j - 1].digitToInt()
             }
         }
     }
 
     fun fullJudge(i: Int, j: Int): Boolean {
-        if (i == 0 && j == 0) {
-            return array[i][j] < array[i + 1][j] && array[i][j] < array[i][j + 1]
-        } else if (i == row - 1 && j == 0) {
-            return array[i][j] < array[i - 1][j] && array[i][j] < array[i][j + 1]
-        } else if (i == 0 && j == column - 1) {
-            return array[i][j] < array[i][j - 1] && array[i][j] < array[i + 1][j]
-        } else if (i == row - 1 && j == column - 1) {
-            return array[i][j] < array[i][j - 1] && array[i][j] < array[i - 1][j]
-        } else if (i == 0) {
-            return array[i][j] < array[i][j - 1] && array[i][j] < array[i][j + 1]
-                    && array[i][j] < array[i + 1][j]
-        } else if (i == row - 1) {
-            return array[i][j] < array[i][j - 1] && array[i][j] < array[i][j + 1]
-                    && array[i][j] < array[i - 1][j]
-        } else if (j == 0) {
-            return array[i][j] < array[i - 1][j] && array[i][j] < array[i + 1][j]
-                    && array[i][j] < array[i][j + 1]
-        } else if (j == column - 1) {
-            return array[i][j] < array[i - 1][j] && array[i][j] < array[i + 1][j]
-                    && array[i][j] < array[i][j - 1]
-        } else {
-            return array[i][j] < array[i - 1][j] && array[i][j] < array[i + 1][j]
-                    && array[i][j] < array[i][j - 1] && array[i][j] < array[i][j + 1]
-        }
+        return array[i][j] < array[i - 1][j] && array[i][j] < array[i + 1][j]
+                && array[i][j] < array[i][j - 1] && array[i][j] < array[i][j + 1]
     }
 
     fun part1(): Int {
         var result = 0
-        for (i in 0 until row) {
-            for (j in 0 until column) {
+        for (i in 1 until row + 1) {
+            for (j in 1 until column + 1) {
                 if (fullJudge(i, j)) {
                     result += 1 + array[i][j]
                 }
