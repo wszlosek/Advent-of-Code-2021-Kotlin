@@ -62,8 +62,8 @@ fun main() {
 
     fun part2(): Int {
         val basinsLen = mutableListOf<Int>()
-        for (i in 0 until row) {
-            for (j in 0 until column) {
+        for (i in 0 until row+1) {
+            for (j in 0 until column+1) {
                 if ((i == 0 || array[i - 1][j] > array[i][j]) && (j == 0 || array[i][j - 1] > array[i][j])
                     && (i == row - 1 || array[i + 1][j] > array[i][j]) && (j == column - 1 || array[i][j + 1] > array[i][j])
                 ) {
