@@ -1,117 +1,54 @@
 fun main() {
+    val graphMap = mutableMapOf<String, MutableSet<String>>()
+    fun initMap(input: List<String>) {
+        for (i in input) {
+            val (a, b) = i.split("-")
+            graphMap.getOrPut(a) { mutableSetOf() }.add(b)
+            graphMap.getOrPut(b) { mutableSetOf() }.add(a)
+        }
+    }
+
+    fun paths(
+        graphMap: Map<String, Set<String>>,
+        source: String,
+        end: String,
+        visited: MutableSet<String>,
+        withExtraSum: Boolean = false
+    ): Int {
+        if (source == end) {
+            return 1
+        }
+
+        var sum = 0
+        visited.add(source)
+        for (i in graphMap[source]!!) {
+            if (i !in visited || isAllUppercase(i)) {
+                sum += paths(graphMap, i, end, visited.toMutableSet(), withExtraSum)
+            }
+        }
+
+        if (withExtraSum) {
+            for (i in graphMap[source]!!) {
+                if (i in visited && !isAllUppercase(i) && i !in listOf("start", "end")) {
+                    sum += paths(graphMap, i, end, visited.toMutableSet())
+                }
+            }
+        }
+
+        visited.remove(source)
+        return sum
+    }
 
     fun part1(): Int {
-        val graph = AdjacencyList<String>()
-        val start = graph.createVertex("start")
-        val end = graph.createVertex("end")
-        val KF = graph.createVertex("KF")
-        val sr = graph.createVertex("sr")
-        val OO = graph.createVertex("OO")
-        val vy = graph.createVertex("vy")
-        val FP = graph.createVertex("FP")
-        val mi = graph.createVertex("mi")
-        val na = graph.createVertex("na")
-        val lh = graph.createVertex("lh")
-        val wp = graph.createVertex("wp")
-
-        graph.add(EdgeType.UNDIRECTED, KF, sr, 300.0)
-        graph.add(EdgeType.UNDIRECTED, OO, vy, 500.0)
-        graph.add(EdgeType.UNDIRECTED, start, FP, 250.0)
-        graph.add(EdgeType.UNDIRECTED, FP, end, 250.0)
-        graph.add(EdgeType.UNDIRECTED, vy, mi, 450.0)
-        graph.add(EdgeType.UNDIRECTED, vy, KF, 300.0)
-        graph.add(EdgeType.UNDIRECTED, vy, na, 600.0)
-        graph.add(EdgeType.UNDIRECTED, start, sr, 50.0)
-        graph.add(EdgeType.UNDIRECTED, FP, lh, 50.0)
-        graph.add(EdgeType.UNDIRECTED, sr, FP, 50.0)
-        graph.add(EdgeType.UNDIRECTED, na, FP, 50.0)
-        graph.add(EdgeType.UNDIRECTED, end, KF, 50.0)
-        graph.add(EdgeType.UNDIRECTED, na, mi, 50.0)
-        graph.add(EdgeType.UNDIRECTED, lh, KF, 50.0)
-        graph.add(EdgeType.UNDIRECTED, end, lh, 50.0)
-        graph.add(EdgeType.UNDIRECTED, na, start, 50.0)
-        graph.add(EdgeType.UNDIRECTED, wp, KF, 50.0)
-        graph.add(EdgeType.UNDIRECTED, mi, KF, 50.0)
-        graph.add(EdgeType.UNDIRECTED, vy, sr, 50.0)
-        graph.add(EdgeType.UNDIRECTED, vy, lh, 50.0)
-        graph.add(EdgeType.UNDIRECTED, sr, mi, 50.0)
-
-        return graph.numberOfPaths(start, end)
+        return paths(graphMap, "start", "end", mutableSetOf())
     }
 
     fun part2(): Int {
-        val graph = AdjacencyList<String>()
-/*
-        val start = graph.createVertex("start")
-        val end = graph.createVertex("end")
-        val KF = graph.createVertex("KF")
-        val sr = graph.createVertex("sr")
-        val OO = graph.createVertex("OO")
-        val vy = graph.createVertex("vy")
-        val FP = graph.createVertex("FP")
-        val mi = graph.createVertex("mi")
-        val na = graph.createVertex("na")
-        val lh = graph.createVertex("lh")
-        val wp = graph.createVertex("wp")
-
-        graph.add(EdgeType.UNDIRECTED, KF, sr, 300.0)
-        graph.add(EdgeType.UNDIRECTED, OO, vy, 500.0)
-        graph.add(EdgeType.UNDIRECTED, start, FP, 250.0)
-        graph.add(EdgeType.UNDIRECTED, FP, end, 250.0)
-        graph.add(EdgeType.UNDIRECTED, vy, mi, 450.0)
-        graph.add(EdgeType.UNDIRECTED, vy, KF, 300.0)
-        graph.add(EdgeType.UNDIRECTED, vy, na, 600.0)
-        graph.add(EdgeType.UNDIRECTED, start, sr, 50.0)
-        graph.add(EdgeType.UNDIRECTED, FP, lh, 50.0)
-        graph.add(EdgeType.UNDIRECTED, sr, FP, 50.0)
-        graph.add(EdgeType.UNDIRECTED, na, FP, 50.0)
-        graph.add(EdgeType.UNDIRECTED, end, KF, 50.0)
-        graph.add(EdgeType.UNDIRECTED, na, mi, 50.0)
-        graph.add(EdgeType.UNDIRECTED, lh, KF, 50.0)
-        graph.add(EdgeType.UNDIRECTED, end, lh, 50.0)
-        graph.add(EdgeType.UNDIRECTED, na, start, 50.0)
-        graph.add(EdgeType.UNDIRECTED, wp, KF, 50.0)
-        graph.add(EdgeType.UNDIRECTED, mi, KF, 50.0)
-        graph.add(EdgeType.UNDIRECTED, vy, sr, 50.0)
-        graph.add(EdgeType.UNDIRECTED, vy, lh, 50.0)
-        graph.add(EdgeType.UNDIRECTED, sr, mi, 50.0)
-
-        val start = graph.createVertex("start")
-        val end = graph.createVertex("end")
-        val dc = graph.createVertex("dc")
-        val HN = graph.createVertex("HN")
-        val kj = graph.createVertex("kj")
-        val LN = graph.createVertex("LN")
-        val sa = graph.createVertex("sa")
-
-        graph.add(EdgeType.UNDIRECTED, dc, end, 50.0)
-        graph.add(EdgeType.UNDIRECTED, start, HN, 50.0)
-        graph.add(EdgeType.UNDIRECTED, start, kj, 50.0)
-        graph.add(EdgeType.UNDIRECTED, start, dc,50.0)
-        graph.add(EdgeType.UNDIRECTED, dc, HN, 50.0)
-        graph.add(EdgeType.UNDIRECTED, LN, dc, 50.0)
-        graph.add(EdgeType.UNDIRECTED, HN, end, 50.0)
-        graph.add(EdgeType.UNDIRECTED, kj, sa, 50.0)
-        graph.add(EdgeType.UNDIRECTED, kj, HN, 50.0)
-        graph.add(EdgeType.UNDIRECTED, kj, dc, 50.0)
-
-        val start = graph.createVertex("start")
-        val end = graph.createVertex("end")
-        val A = graph.createVertex("A")
-        val b = graph.createVertex("b")
-        val c = graph.createVertex("c")
-        val d = graph.createVertex("d")
-        graph.add(EdgeType.DIRECTED, start, A, 50.0)
-        graph.add(EdgeType.DIRECTED, start, b, 50.0)
-        graph.add(EdgeType.UNDIRECTED, A, c, 50.0)
-        graph.add(EdgeType.UNDIRECTED, A, b,50.0)
-        graph.add(EdgeType.UNDIRECTED, b, d, 50.0)
-        graph.add(EdgeType.DIRECTED, A, end, 50.0)
-        graph.add(EdgeType.DIRECTED, b, end, 50.0)
-
-        println(graph) */
-        return 0
+        return paths(graphMap, "start", "end", mutableSetOf(), true)
     }
+
+    val input = readInput("Day12")
+    initMap(input)
     println(part1())
     println(part2())
 }
