@@ -4,7 +4,7 @@ data class Position(var x: Int, var y: Int) {
     }
 
     fun outside(area: Area): Boolean {
-        return x > area.x2 || y < area.y1
+        return x > area.x2
     }
 }
 
@@ -37,21 +37,15 @@ data class Probe(
         targetArea.y2 -= startY
     }
 
+
     fun moveToArea(): Int {
-        while (true) {
+        repeat(1000) {
             currentPosition.x += currentXChange
             currentPosition.y += currentYChange
 
-            if (maxY < currentPosition.y) {
-                maxY = currentPosition.y
-            }
-
             if (currentPosition.inArea(targetArea)) {
                 optArea()
-                return maxY
-            } else if (currentPosition.outside(targetArea)) {
-                optArea()
-                return -1
+                return startY * (startY + 1) / 2
             }
 
             if (currentXChange > 0) {
@@ -61,6 +55,8 @@ data class Probe(
             }
             currentYChange -= 1
         }
+        optArea()
+        return Int.MIN_VALUE
     }
 }
 
@@ -74,7 +70,7 @@ fun main() {
         val y = cleanData.last().drop(2).split("..")
         val area = Area(x.first().toInt(), x.last().toInt(), y.first().toInt(), y.last().toInt())
 
-        for (i in -100..area.x2) {
+        for (i in -1000..area.x2) {
             for (j in -1000..1000) {
                 val probe = Probe(Position(i, j), area)
                 val maxY = probe.moveToArea()
@@ -88,7 +84,7 @@ fun main() {
     }
 
     fun part2(): Int {
-        return maxYList.count { it > -1 }
+        return maxYList.count { it > Int.MIN_VALUE }
     }
 
     val input = readInput("Day17")
